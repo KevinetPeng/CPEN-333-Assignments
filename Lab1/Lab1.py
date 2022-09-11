@@ -34,17 +34,91 @@ def playerNextMove() -> None:
         and prints the info and the updated board;
         error checks that the input is a valid cell number 
     """
-    print("Next move for X (state a valid cell num):")
+    while True:
+        try:    
+            move = int(input("Next move for X (state a valid cell num):"))
+
+            if move in played or move < 0 or move > 8:
+                print("Must enter a valid cell number")
+            else:
+                print(f"You chose cell {move}")
+
+                played.add(move)
+                board[move] = 'X'
+
+                printBoard()
+
+                break
+
+        except:
+            print("Must be an integer")
+
 
 def computerNextMove() -> None:
     """ Computer randomly chooses a valid cell, 
         and prints the info and the updated board 
     """
+    move = random.choice([x for x in range(0, 9) if x not in played])
+
+    print(f"Computer chose cell {move}")
+    played.add(move)
+    board[move] = 'O'
+
+    printBoard()
+
     pass #To Implement
 
 def hasWon(who: str) -> bool:
     """ returns True if who (being passed 'X' or 'O') has won, False otherwise """
-    pass #To Implemen
+
+    # row checks
+    for row_index in range (0, 9, 3):
+        count = 0
+
+        for i in range(row_index, row_index + 3):
+            if board[i] == who:
+                count += 1
+            else:
+                break
+        
+        if count == 3:
+            return True
+
+    # col checks
+    for col_index in range (0, 3):
+        count = 0
+
+        for i in range(col_index, 9, 3):
+            if board[i] == who:
+                count += 1
+            else:
+                break
+        
+        if count == 3:
+            return True
+    
+    # 2 diagonal checks
+    count = 0
+    for i in range(0, 9, 4):
+        if board[i] == who:
+                count += 1
+        else:
+            break
+
+    if count == 3:
+        return True
+
+    count = 0
+    for i in range(2, 7, 2):
+        if board[i] == who:
+                count += 1
+        else:
+            break
+        
+    if count == 3:
+        return True
+
+    return False
 
 def terminate(who: str) -> bool:
     """ returns True if who (being passed 'X' or 'O') has won or if it's a draw, False otherwise;
@@ -53,7 +127,21 @@ def terminate(who: str) -> bool:
                 "You lost! Thanks for playing." or 
                 "A draw! Thanks for playing."  
     """
-    pass #To Implement
+    # check if won
+    if hasWon(who):
+        if who == 'X':
+            print("You won! Thanks for playing.")
+        else:
+            print("You lost! Thanks for playing.")
+
+        return True
+    
+    # check if draw
+    if len(played) == 9:
+        print("A draw! Thanks for playing.")
+        return True
+
+    return False
 
 if __name__ == "__main__":
     # Use as is. 
