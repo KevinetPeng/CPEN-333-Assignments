@@ -21,6 +21,7 @@ def printBoard() -> None:
     """ prints the board on the screen based on the values in the board list """
     print("\n")
 
+    # print board values and horizontal divides (if not last line)
     for i in range(0, 9, 3):
       print(f"   {board[i]} | {board[i+1]} | {board[i+2]}    {i} | {i+1} | {i+2}")
       if i < 6:
@@ -35,9 +36,10 @@ def playerNextMove() -> None:
         error checks that the input is a valid cell number 
     """
     while True:
-        try:    
+        try:
             move = int(input("Next move for X (state a valid cell num):"))
 
+            # check that input is within bounds of board and not previously played
             if move in played or move < 0 or move > 8:
                 print("Must enter a valid cell number")
             else:
@@ -51,6 +53,7 @@ def playerNextMove() -> None:
                 break
 
         except:
+            # casting to int will throw error for non-integer input
             print("Must be an integer")
 
 
@@ -58,6 +61,7 @@ def computerNextMove() -> None:
     """ Computer randomly chooses a valid cell, 
         and prints the info and the updated board 
     """
+    # random in range 0-8 not including those in the already played set
     move = random.choice([x for x in range(0, 9) if x not in played])
 
     print(f"Computer chose cell {move}")
@@ -66,12 +70,11 @@ def computerNextMove() -> None:
 
     printBoard()
 
-    pass #To Implement
 
 def hasWon(who: str) -> bool:
     """ returns True if who (being passed 'X' or 'O') has won, False otherwise """
 
-    # row checks
+    # 3 row checks
     for row_index in range (0, 9, 3):
         count = 0
 
@@ -84,7 +87,7 @@ def hasWon(who: str) -> bool:
         if count == 3:
             return True
 
-    # col checks
+    # 3 col checks
     for col_index in range (0, 3):
         count = 0
 
@@ -97,27 +100,15 @@ def hasWon(who: str) -> bool:
         if count == 3:
             return True
     
-    # 2 diagonal checks
-    count = 0
-    for i in range(0, 9, 4):
-        if board[i] == who:
-                count += 1
-        else:
-            break
-
-    if count == 3:
+    # 1st diagonal check
+    if board[0] == who and board[4] == who and board[8] == who:
         return True
 
-    count = 0
-    for i in range(2, 7, 2):
-        if board[i] == who:
-                count += 1
-        else:
-            break
-        
-    if count == 3:
+    # 2nd diagonal check
+    if board[2] == who and board[4] == who and board[6] == who:
         return True
 
+    # if we haven't returned true by this point, return false
     return False
 
 def terminate(who: str) -> bool:
