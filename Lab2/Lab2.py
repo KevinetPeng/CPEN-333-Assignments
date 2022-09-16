@@ -1,6 +1,6 @@
 #Lab 2
-#student name:
-#student number:
+#student name: Kevin Peng
+#student number: 94742293
 
 from tkinter import *
 #do not import any more modules
@@ -40,25 +40,35 @@ class Rational:
         """adds 'this' rational to secondRational
            returns the result as a rational number (type Rational)
         """     
-        # to implement
+        # return a * d plus b * c all over b * d
+        numer = self.numerator * secondRational.denominator + secondRational.numerator * self.denominator
+        denom = self.denominator * secondRational.denominator
+
+        return Rational(numer, denom)
     
     def subtract(self, secondRational):
         """subtracts secondRational from 'this' rational to 
            returns the result as a rational number (type Rational)
         """ 
-        # to implement
+        # return a * d minus b * c all over b * d
+        numer = self.numerator * secondRational.denominator - secondRational.numerator * self.denominator
+        denom = self.denominator * secondRational.denominator
+
+        return Rational(numer, denom)
 
     def multiply(self, secondRational):
         """multiplies 'this' rational to secondRational
            returns the result as a rational number (type Rational)
         """ 
-        # to implement
+        # return a * c over b * d
+        return Rational(self.numerator * secondRational.numerator, self.denominator * secondRational.denominator)
 
     def divide(self, secondRational):
         """divides 'this' rational by secondRational
            returns the result as a rational number (type Rational)
         """ 
-        # to implement
+        # return a * d over b * c
+        return Rational(self.numerator * secondRational.denominator, self.denominator * secondRational.numerator)
 
     def toString(self):
         """ returns a string representation of 'this' rational
@@ -66,7 +76,10 @@ class Rational:
             if 'this' rational is an integer, it must not show any denominator 
             if denominator is 0, it just returns "NaN" (not a number)
         """ 
-        # to implement
+        if(self.denominator == 0):
+            return "NaN"
+        else:
+            return f"{int(self.numerator)}/{int(self.denominator)}"
 
 class GUI:
     """ this class implements the GUI for our program
