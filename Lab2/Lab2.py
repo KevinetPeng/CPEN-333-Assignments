@@ -78,6 +78,8 @@ class Rational:
         """ 
         if(self.denominator == 0):
             return "NaN"
+        elif(self.denominator == 1 or self.numerator == 0):
+            return f"{int(self.numerator)}"
         else:
             return f"{int(self.numerator)}/{int(self.denominator)}"
 
