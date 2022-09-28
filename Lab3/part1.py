@@ -18,7 +18,7 @@ def checkColumn(puzzle: list, column: int):
     for i in range(9):
         columnSet.add(puzzle[i][column])
     
-    # Print if current column is valid or not
+    # Print if current column is valid or not using helper function
     print(f"Column {column} {getIsValidString(columnSet)}")
 
 
@@ -39,7 +39,7 @@ def checkRow(puzzle: list, row: int):
     for i in range(9):
         rowSet.add(puzzle[row][i])
     
-    # Print if current row is valid or not
+    # Print if current row is valid or not using helper function
     print(f"Row {row} {getIsValidString(rowSet)}")
 
 
@@ -63,11 +63,12 @@ def checkSubgrid(puzzle: list, subgrid: int):
     # Get row and column ranges from helper function
     (rowRange, columnRange) = getSubgridIndices(subgrid)
 
+    # Iterate through subgrid and add items to set
     for row in rowRange:
         for col in columnRange:
             subgridSet.add(puzzle[row][col])
 
-     # Print if current subgrid is valid or not
+     # Print if current subgrid is valid or not using helper function
     print(f"Subgrid {subgrid} {getIsValidString(subgridSet)}")
 
 
