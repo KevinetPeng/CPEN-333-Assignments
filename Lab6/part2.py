@@ -23,11 +23,19 @@ def philosopher(id: int, chopstick: list):
         leftChopstick = id
         rightChopstick = (id + 1) % 5      #5 is number of philosophers
 
-        #to simplify, try statement not used here
-        chopstick[leftChopstick].acquire()
-        print(f"DEBUG: philosopher{id} has chopstick{leftChopstick}")
-        chopstick[rightChopstick].acquire()
-        print(f"DEBUG: philosopher{id} has chopstick{rightChopstick}")
+        # if philosopher is odd, pick up left chopstick first, and then right
+        if id % 2 == 0:
+            #to simplify, try statement not used here
+            chopstick[leftChopstick].acquire()
+            print(f"DEBUG: philosopher{id} has chopstick{leftChopstick}")
+            chopstick[rightChopstick].acquire()
+            print(f"DEBUG: philosopher{id} has chopstick{rightChopstick}")
+        else:
+            #to simplify, try statement not used here
+            chopstick[rightChopstick].acquire()
+            print(f"DEBUG: philosopher{id} has chopstick{rightChopstick}")
+            chopstick[leftChopstick].acquire()
+            print(f"DEBUG: philosopher{id} has chopstick{leftChopstick}")
 
         eatForAWhile()  #use this line as is
 
