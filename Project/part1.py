@@ -124,10 +124,11 @@ class Game():
             Use the SPEED constant to set how often the move tasks
             are generated.
         """
-        SPEED = 0.15     #speed of snake updates (sec)
+        SPEED = 0.05     #speed of snake updates (sec)
         while self.gameNotOver:
             #complete the method implementation below
-            pass #remove this line from your implemenation
+            self.move()
+            time.sleep(SPEED)
 
     def whenAnArrowKeyIsPressed(self, e) -> None:
         """ 
@@ -161,6 +162,33 @@ class Game():
         """
         NewSnakeCoordinates = self.calculateNewCoordinates()
         #complete the method implementation below
+        x, y = NewSnakeCoordinates
+
+        # check if game is over
+        self.isGameOver(NewSnakeCoordinates)
+
+        # if new movement would place snake on a prey (within prey boundary boxes), comsume prey
+        if (x > self.rectangleCoordinates[0] and x < self.rectangleCoordinates[2] and 
+            y > self.rectangleCoordinates[1] and y < self.rectangleCoordinates[3]):
+            # update snake coords
+            self.snakeCoordinates.append(NewSnakeCoordinates)
+
+            # create new prey
+            self.createNewPrey()
+
+            # update score
+            self.score += 1
+            self.queue.put({"score": self.score})
+        else:
+            # prey was not consumed
+            # move snake in new direction by making all elements equal to the element on its right, and
+            # updating snakeCoordinates such that the end is the new coordinates
+            for i in range(0, len(self.snakeCoordinates) - 1):
+                self.snakeCoordinates[i] = self.snakeCoordinates[i+1]
+            self.snakeCoordinates[-1] = NewSnakeCoordinates
+        
+        # queue snake move with new coordinates
+        self.queue.put({"move": self.snakeCoordinates})
 
 
     def calculateNewCoordinates(self) -> tuple:
@@ -175,13 +203,13 @@ class Game():
         lastX, lastY = self.snakeCoordinates[-1]
         #complete the method implementation below 
         if self.direction == "Left":
-          return (lastX - 5, lastY)
+          return (lastX - 10, lastY)
         elif self.direction == "Right":
-          return (lastX + 5, lastY)
+          return (lastX + 10, lastY)
         elif self.direction == "Up":
-          return (lastX, lastY + 5)
+          return (lastX, lastY - 10)
         elif self.direction == "Down":
-          return (lastX, lastY - 5)
+          return (lastX, lastY + 10)
 
 
     def isGameOver(self, snakeCoordinates) -> None:
@@ -194,6 +222,18 @@ class Game():
         """
         x, y = snakeCoordinates
         #complete the method implementation below
+        
+        # check if snake bit itself
+        if(snakeCoordinates in self.snakeCoordinates):
+            self.gameNotOver = False
+            self.queue.put({"game_over": True})
+
+        # check if snake collided with wall
+        if (x >= WINDOW_WIDTH or x <= 0 or y >= WINDOW_HEIGHT or y<= 0 ):
+            self.gameNotOver = False
+            self.queue.put({"game_over": True})
+        
+        
 
     def createNewPrey(self) -> None:
         """ 
@@ -208,6 +248,11 @@ class Game():
         """
         THRESHOLD = 15   #sets how close prey can be to borders
         #complete the method implementation below
+        rand_x = random.randrange(THRESHOLD, WINDOW_WIDTH - THRESHOLD, 10)
+        rand_y = random.randrange(THRESHOLD, WINDOW_HEIGHT - THRESHOLD, 10)
+
+        self.rectangleCoordinates = (rand_x - 5, rand_y - 5, rand_x + 5, rand_y + 5)
+        self.queue.put({"prey": self.rectangleCoordinates})
         
 
 
