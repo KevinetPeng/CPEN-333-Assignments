@@ -173,7 +173,15 @@ class Game():
             It is used by the move() method.    
         """
         lastX, lastY = self.snakeCoordinates[-1]
-        #complete the method implementation below
+        #complete the method implementation below 
+        if self.direction == "Left":
+          return (lastX - 5, lastY)
+        elif self.direction == "Right":
+          return (lastX + 5, lastY)
+        elif self.direction == "Up":
+          return (lastX, lastY + 5)
+        elif self.direction == "Down":
+          return (lastX, lastY - 5)
 
 
     def isGameOver(self, snakeCoordinates) -> None:
@@ -200,6 +208,7 @@ class Game():
         """
         THRESHOLD = 15   #sets how close prey can be to borders
         #complete the method implementation below
+        
 
 
 if __name__ == "__main__":
