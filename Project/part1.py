@@ -124,7 +124,7 @@ class Game():
             Use the SPEED constant to set how often the move tasks
             are generated.
         """
-        SPEED = 0.05     #speed of snake updates (sec)
+        SPEED = 0.15     #speed of snake updates (sec)
         while self.gameNotOver:
             #complete the method implementation below
             self.move()
@@ -181,7 +181,7 @@ class Game():
             self.queue.put({"score": self.score})
         else:
             # prey was not consumed
-            # move snake in new direction by making all elements equal to the element on its right, and
+            # move snake in new direction by making all elements in snakeCoordinates equal to the element on its right, and
             # updating snakeCoordinates such that the end is the new coordinates
             for i in range(0, len(self.snakeCoordinates) - 1):
                 self.snakeCoordinates[i] = self.snakeCoordinates[i+1]
